@@ -1,0 +1,23 @@
+name: golden_grain_calculator
+description: "Golden Grain Calculator — inch fraction golden ratio layout tool (free & premium)."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Persists the premium unlock flag across launches.
+  shared_preferences: '>=2.0.0 <3.0.0'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  # Loose constraint so the linter resolves across a wide range of Flutter SDKs.
+  flutter_lints: '>=2.0.0 <6.0.0'
+
+flutter:
+  uses-material-design: true

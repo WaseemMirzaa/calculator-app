@@ -1,0 +1,66 @@
+name: Release
+
+# Builds signed-with-debug-key release artifacts and publishes them to a
+# GitHub Release whenever a version tag (e.g. v1.0.0) is pushed.
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.44.2'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & publish APK + AAB
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK (release)
+        run: flutter build apk --release
+
+      - name: Build App Bundle (release)
+        run: flutter build appbundle --release
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk \
+             "dist/golden-grain-calculator-${{ github.ref_name }}.apk"
+          cp build/app/outputs/bundle/release/app-release.aab \
+             "dist/golden-grain-calculator-${{ github.ref_name }}.aab"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-binaries
+          path: dist/*
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.apk
+            dist/*.aab
+          generate_release_notes: true
