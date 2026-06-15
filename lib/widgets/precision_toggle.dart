@@ -86,11 +86,21 @@ class _ToggleButton extends StatelessWidget {
       onTap: onTap,
       child: Opacity(
         opacity: isLocked ? 0.4 : 1.0,
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
-            color: isActive ? AppColors.goldPrimary : Colors.transparent,
+            gradient: isActive ? AppGradients.goldButton : null,
             borderRadius: BorderRadius.circular(6),
+            boxShadow: isActive
+                ? const [
+                    BoxShadow(
+                      color: AppColors.goldGlow,
+                      blurRadius: 12,
+                      spreadRadius: -2,
+                    ),
+                  ]
+                : null,
           ),
           child: content,
         ),

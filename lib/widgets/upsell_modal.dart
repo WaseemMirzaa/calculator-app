@@ -97,36 +97,50 @@ class UpsellModal extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: busy ? null : onUpgrade,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.goldPrimary,
-                      foregroundColor: AppColors.actionTextOnGold,
-                      disabledBackgroundColor: AppColors.gold40,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: AppGradients.goldButton,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: AppColors.goldGlow,
+                        blurRadius: 16,
+                        spreadRadius: -2,
+                        offset: Offset(0, 4),
                       ),
+                    ],
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: busy ? null : onUpgrade,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        foregroundColor: AppColors.actionTextOnGold,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                      child: busy
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors.actionTextOnGold,
+                              ),
+                            )
+                          : const Text(
+                              'Upgrade Now - ${PremiumService.price}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                     ),
-                    child: busy
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: AppColors.actionTextOnGold,
-                            ),
-                          )
-                        : const Text(
-                            'Upgrade Now - ${PremiumService.price}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
                   ),
                 ),
                 const SizedBox(height: 16),

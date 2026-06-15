@@ -28,7 +28,8 @@ class IoRow extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: active ? AppColors.black25 : AppColors.black15,
@@ -36,6 +37,16 @@ class IoRow extends StatelessWidget {
           border: Border.all(
             color: active ? AppColors.gold40 : AppColors.white03,
           ),
+          // Soft gold halo around the row you're driving.
+          boxShadow: active
+              ? const [
+                  BoxShadow(
+                    color: AppColors.goldGlowSoft,
+                    blurRadius: 16,
+                    spreadRadius: -4,
+                  ),
+                ]
+              : null,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

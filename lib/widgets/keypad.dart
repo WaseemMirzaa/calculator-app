@@ -168,15 +168,19 @@ class _KeyButtonState extends State<_KeyButton> {
           padding: const EdgeInsets.symmetric(vertical: 14),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: _pressed ? AppColors.bgKeyActive : AppColors.bgKey,
+            gradient: _pressed ? AppGradients.keyPressed : AppGradients.key,
             borderRadius: BorderRadius.circular(8),
-            boxShadow: const [
-              BoxShadow(
-                color: AppColors.black20,
-                blurRadius: 4,
-                offset: Offset(0, 2),
-              ),
-            ],
+            // Faint top rim-light for a moulded, tactile key.
+            border: Border.all(color: AppColors.white05),
+            boxShadow: _pressed
+                ? null
+                : const [
+                    BoxShadow(
+                      color: AppColors.black30,
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
           ),
           child: Text(
             caption,

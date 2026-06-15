@@ -54,84 +54,102 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.bgDarkWood,
-      body: Center(
-        child: FadeTransition(
-          opacity: _fade,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Golden-ratio mark: φ inside a gold ring.
-              Container(
-                width: 96,
-                height: 96,
-                decoration: BoxDecoration(
-                  color: AppColors.bgPanel,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.goldPrimary, width: 2),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: AppColors.black50,
-                      blurRadius: 24,
-                      offset: Offset(0, 8),
+    return DecoratedBox(
+        decoration: const BoxDecoration(gradient: AppGradients.scaffold),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(
+            child: FadeTransition(
+              opacity: _fade,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Golden-ratio mark: φ inside a gold ring.
+                  Container(
+                    width: 96,
+                    height: 96,
+                    decoration: BoxDecoration(
+                      gradient: AppGradients.panel,
+                      shape: BoxShape.circle,
+                      border:
+                          Border.all(color: AppColors.goldPrimary, width: 2),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: AppColors.black50,
+                          blurRadius: 24,
+                          offset: Offset(0, 8),
+                        ),
+                        BoxShadow(
+                          color: AppColors.goldGlow,
+                          blurRadius: 32,
+                          spreadRadius: -4,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  'φ', // φ
-                  style: TextStyle(
-                    color: AppColors.goldBright,
-                    fontSize: 52,
-                    fontWeight: FontWeight.w600,
-                    height: 1.0,
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'φ', // φ
+                      style: TextStyle(
+                        color: AppColors.goldBright,
+                        fontSize: 52,
+                        fontWeight: FontWeight.w600,
+                        height: 1.0,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 28),
+                  // Metallic-gold wordmark.
+                  ShaderMask(
+                    shaderCallback: (rect) =>
+                        AppGradients.goldMetallic.createShader(rect),
+                    blendMode: BlendMode.srcIn,
+                    child: const Column(
+                      children: [
+                        Text(
+                          'GOLDEN GRAIN',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 2,
+                            height: 1.1,
+                          ),
+                        ),
+                        Text(
+                          'CALCULATOR',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 6,
+                            height: 1.1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'inch fraction golden ratio tool',
+                    style: TextStyle(
+                      color: AppColors.textMuted,
+                      fontSize: 12,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  const SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.goldPrimary,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 28),
-              const Text(
-                'GOLDEN GRAIN',
-                style: TextStyle(
-                  color: AppColors.goldPrimary,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 2,
-                  height: 1.1,
-                ),
-              ),
-              const Text(
-                'CALCULATOR',
-                style: TextStyle(
-                  color: AppColors.goldPrimary,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 6,
-                  height: 1.1,
-                ),
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'inch fraction golden ratio tool',
-                style: TextStyle(
-                  color: AppColors.textMuted,
-                  fontSize: 12,
-                  letterSpacing: 1.5,
-                ),
-              ),
-              const SizedBox(height: 40),
-              const SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: AppColors.goldPrimary,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

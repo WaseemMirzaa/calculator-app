@@ -96,82 +96,85 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     final premium = AppScope.of(context);
     final bool isPremium = premium.isPremium;
 
-    return Scaffold(
-      backgroundColor: AppColors.bgDarkWood,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        titleSpacing: 16,
-        title: _TierBadge(isPremium: isPremium),
-        actions: [
-          PopupMenuButton<_MenuAction>(
-            icon: const Icon(Icons.more_vert, color: AppColors.goldPrimary),
-            color: AppColors.bgPanel,
-            onSelected: _onMenu,
-            itemBuilder: (context) => [
-              if (!isPremium)
-                const PopupMenuItem(
-                  value: _MenuAction.upgrade,
-                  child:
-                      _MenuTile(Icons.workspace_premium, 'Upgrade to Premium'),
-                )
-              else
-                const PopupMenuItem(
-                  enabled: false,
-                  child: _MenuTile(Icons.check_circle, 'Premium Active'),
-                ),
-              const PopupMenuItem(
-                value: _MenuAction.restore,
-                child: _MenuTile(Icons.restore, 'Restore Purchase'),
+    return DecoratedBox(
+        decoration: const BoxDecoration(gradient: AppGradients.scaffold),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            scrolledUnderElevation: 0,
+            titleSpacing: 16,
+            title: _TierBadge(isPremium: isPremium),
+            actions: [
+              PopupMenuButton<_MenuAction>(
+                icon: const Icon(Icons.more_vert, color: AppColors.goldPrimary),
+                color: AppColors.bgPanel,
+                onSelected: _onMenu,
+                itemBuilder: (context) => [
+                  if (!isPremium)
+                    const PopupMenuItem(
+                      value: _MenuAction.upgrade,
+                      child: _MenuTile(
+                          Icons.workspace_premium, 'Upgrade to Premium'),
+                    )
+                  else
+                    const PopupMenuItem(
+                      enabled: false,
+                      child: _MenuTile(Icons.check_circle, 'Premium Active'),
+                    ),
+                  const PopupMenuItem(
+                    value: _MenuAction.restore,
+                    child: _MenuTile(Icons.restore, 'Restore Purchase'),
+                  ),
+                  const PopupMenuItem(
+                    value: _MenuAction.privacy,
+                    child:
+                        _MenuTile(Icons.privacy_tip_outlined, 'Privacy Policy'),
+                  ),
+                  const PopupMenuItem(
+                    value: _MenuAction.terms,
+                    child: _MenuTile(
+                        Icons.description_outlined, 'Terms of Service'),
+                  ),
+                  // Debug-only: lets a tester flip back to the free layout.
+                  if (kDebugMode && isPremium)
+                    const PopupMenuItem(
+                      value: _MenuAction.resetFree,
+                      child: _MenuTile(
+                          Icons.bug_report_outlined, 'Switch to Free (debug)'),
+                    ),
+                ],
               ),
-              const PopupMenuItem(
-                value: _MenuAction.privacy,
-                child: _MenuTile(Icons.privacy_tip_outlined, 'Privacy Policy'),
-              ),
-              const PopupMenuItem(
-                value: _MenuAction.terms,
-                child:
-                    _MenuTile(Icons.description_outlined, 'Terms of Service'),
-              ),
-              // Debug-only: lets a tester flip back to the free layout.
-              if (kDebugMode && isPremium)
-                const PopupMenuItem(
-                  value: _MenuAction.resetFree,
-                  child: _MenuTile(
-                      Icons.bug_report_outlined, 'Switch to Free (debug)'),
-                ),
             ],
           ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 440),
-                  child: CalculatorCard(
-                    controller: _controller,
-                    isPremium: isPremium,
-                    onLocked: _openUpsell,
+          body: Stack(
+            children: [
+              SafeArea(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 440),
+                      child: CalculatorCard(
+                        controller: _controller,
+                        isPremium: isPremium,
+                        onLocked: _openUpsell,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              // Cover the whole screen so the upsell reads like the HTML overlay.
+              if (_showUpsell)
+                UpsellModal(
+                  busy: _purchasing,
+                  onUpgrade: _purchaseFromModal,
+                  onClose: _closeUpsell,
+                ),
+            ],
           ),
-          // Cover the whole screen so the upsell reads like the HTML overlay.
-          if (_showUpsell)
-            UpsellModal(
-              busy: _purchasing,
-              onUpgrade: _purchaseFromModal,
-              onClose: _closeUpsell,
-            ),
-        ],
-      ),
-    );
+        ));
   }
 }
 

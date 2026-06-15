@@ -130,35 +130,49 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
                     const _FeatureRow('One-time purchase — no subscription'),
                     const SizedBox(height: 24),
                     if (!isPremium) ...[
-                      SizedBox(
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: _busy ? null : () => _buy(premium),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.goldPrimary,
-                            foregroundColor: AppColors.actionTextOnGold,
-                            disabledBackgroundColor: AppColors.gold40,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: AppGradients.goldButton,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: AppColors.goldGlow,
+                              blurRadius: 18,
+                              spreadRadius: -2,
+                              offset: Offset(0, 5),
                             ),
+                          ],
+                        ),
+                        child: SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _busy ? null : () => _buy(premium),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              foregroundColor: AppColors.actionTextOnGold,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: _busy
+                                ? const SizedBox(
+                                    height: 22,
+                                    width: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: AppColors.actionTextOnGold,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Upgrade Now - ${PremiumService.price}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                           ),
-                          child: _busy
-                              ? const SizedBox(
-                                  height: 22,
-                                  width: 22,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: AppColors.actionTextOnGold,
-                                  ),
-                                )
-                              : const Text(
-                                  'Upgrade Now - ${PremiumService.price}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
                         ),
                       ),
                       const SizedBox(height: 8),
