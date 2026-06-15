@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../app_scope.dart';
 import '../controllers/calculator_controller.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_drawer.dart';
 import '../widgets/calculator_card.dart';
 import '../widgets/upsell_modal.dart';
 import 'privacy_screen.dart';
@@ -104,49 +105,18 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             scrolledUnderElevation: 0,
-            titleSpacing: 16,
+            iconTheme: const IconThemeData(color: AppColors.goldPrimary),
             title: _TierBadge(isPremium: isPremium),
-            actions: [
-              PopupMenuButton<_MenuAction>(
-                icon: const Icon(Icons.more_vert, color: AppColors.goldPrimary),
-                color: AppColors.bgPanel,
-                onSelected: _onMenu,
-                itemBuilder: (context) => [
-                  if (!isPremium)
-                    const PopupMenuItem(
-                      value: _MenuAction.upgrade,
-                      child: _MenuTile(
-                          Icons.workspace_premium, 'Upgrade to Premium'),
-                    )
-                  else
-                    const PopupMenuItem(
-                      enabled: false,
-                      child: _MenuTile(Icons.check_circle, 'Premium Active'),
-                    ),
-                  const PopupMenuItem(
-                    value: _MenuAction.restore,
-                    child: _MenuTile(Icons.restore, 'Restore Purchase'),
-                  ),
-                  const PopupMenuItem(
-                    value: _MenuAction.privacy,
-                    child:
-                        _MenuTile(Icons.privacy_tip_outlined, 'Privacy Policy'),
-                  ),
-                  const PopupMenuItem(
-                    value: _MenuAction.terms,
-                    child: _MenuTile(
-                        Icons.description_outlined, 'Terms of Service'),
-                  ),
-                  // Debug-only: lets a tester flip back to the free layout.
-                  if (kDebugMode && isPremium)
-                    const PopupMenuItem(
-                      value: _MenuAction.resetFree,
-                      child: _MenuTile(
-                          Icons.bug_report_outlined, 'Switch to Free (debug)'),
-                    ),
-                ],
-              ),
-            ],
+          ),
+          drawer: AppDrawer(
+            isPremium: isPremium,
+            onUpgrade: () => _onMenu(_MenuAction.upgrade),
+            onRestore: () => _onMenu(_MenuAction.restore),
+            onPrivacy: () => _onMenu(_MenuAction.privacy),
+            onTerms: () => _onMenu(_MenuAction.terms),
+            onResetFree: (kDebugMode && isPremium)
+                ? () => _onMenu(_MenuAction.resetFree)
+                : null,
           ),
           body: Stack(
             children: [
@@ -184,27 +154,59 @@ class _TierBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = isPremium ? AppColors.goldPrimary : AppColors.textMuted;
+    // PRO: a premium gold-gradient pill with a soft glow + dark text.
+    if (isPremium) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+        decoration: BoxDecoration(
+          gradient: AppGradients.goldButton,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: const [
+            BoxShadow(
+              color: AppColors.goldGlow,
+              blurRadius: 12,
+              spreadRadius: -2,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.workspace_premium,
+                size: 15, color: AppColors.actionTextOnGold),
+            SizedBox(width: 6),
+            Text(
+              'PRO',
+              style: TextStyle(
+                color: AppColors.actionTextOnGold,
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 1.5,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // FREE: a subtle muted outline pill.
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: AppColors.black20,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color),
+        border: Border.all(color: AppColors.textMuted),
       ),
-      child: Row(
+      child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            isPremium ? Icons.workspace_premium : Icons.lock_outline,
-            size: 14,
-            color: color,
-          ),
-          const SizedBox(width: 6),
+          Icon(Icons.lock_outline, size: 14, color: AppColors.textMuted),
+          SizedBox(width: 6),
           Text(
-            isPremium ? 'PRO' : 'FREE',
+            'FREE',
             style: TextStyle(
-              color: color,
+              color: AppColors.textMuted,
               fontSize: 12,
               fontWeight: FontWeight.w700,
               letterSpacing: 1,
@@ -212,23 +214,6 @@ class _TierBadge extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _MenuTile extends StatelessWidget {
-  const _MenuTile(this.icon, this.label);
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 18, color: AppColors.goldBright),
-        const SizedBox(width: 12),
-        Text(label, style: const TextStyle(color: AppColors.textLight)),
-      ],
     );
   }
 }

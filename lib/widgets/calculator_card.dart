@@ -55,7 +55,7 @@ class CalculatorCard extends StatelessWidget {
             children: [
               const _Header(),
               const SizedBox(height: 16),
-              const DiagramWidget(),
+              DiagramWidget(precision: controller.precision),
               const SizedBox(height: 16),
               PrecisionToggle(
                 controller: controller,
