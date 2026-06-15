@@ -18,6 +18,27 @@ dev_dependencies:
     sdk: flutter
   # Loose constraint so the linter resolves across a wide range of Flutter SDKs.
   flutter_lints: '>=2.0.0 <6.0.0'
+  # App-icon generation from the brand logo.
+  flutter_launcher_icons: ^0.13.1
+  # Used by tool/gen_icons.dart to build the icon + adaptive foreground.
+  image: ^4.0.0
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
+
+# Run: dart run tool/gen_icons.dart && dart run flutter_launcher_icons
+flutter_launcher_icons:
+  image_path: "assets/icon/icon.png"
+  android: "ic_launcher"
+  ios: true
+  remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#14261C"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  web:
+    generate: true
+    image_path: "assets/icon/icon.png"
+    background_color: "#14261C"
+    theme_color: "#14261C"

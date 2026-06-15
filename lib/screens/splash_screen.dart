@@ -64,36 +64,51 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Golden-ratio mark: φ inside a gold ring.
+                  // Brand logo on a glassy, elevated, 20pt-rounded card.
                   Container(
-                    width: 96,
-                    height: 96,
+                    width: 132,
+                    height: 132,
                     decoration: BoxDecoration(
-                      gradient: AppGradients.panel,
-                      shape: BoxShape.circle,
-                      border:
-                          Border.all(color: AppColors.goldPrimary, width: 2),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: const Color(0x33FFFFFF)),
                       boxShadow: const [
+                        // Elevation.
                         BoxShadow(
                           color: AppColors.black50,
-                          blurRadius: 24,
-                          offset: Offset(0, 8),
+                          blurRadius: 30,
+                          offset: Offset(0, 12),
                         ),
+                        // Soft gold halo.
                         BoxShadow(
                           color: AppColors.goldGlow,
-                          blurRadius: 32,
-                          spreadRadius: -4,
+                          blurRadius: 30,
+                          spreadRadius: -6,
                         ),
                       ],
                     ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'φ', // φ
-                      style: TextStyle(
-                        color: AppColors.goldBright,
-                        fontSize: 52,
-                        fontWeight: FontWeight.w600,
-                        height: 1.0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.asset('assets/images/logo.png',
+                              fit: BoxFit.cover),
+                          // Glassy diagonal sheen across the logo.
+                          const DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0x33FFFFFF),
+                                  Color(0x00FFFFFF),
+                                  Color(0x14FFFFFF),
+                                ],
+                                stops: [0.0, 0.55, 1.0],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

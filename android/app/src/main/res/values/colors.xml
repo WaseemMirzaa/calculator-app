@@ -3,4 +3,5 @@
     <!-- Brand background used for the native launch window so there is no
          white flash before the Flutter splash renders. -->
     <color name="launch_background">#FF14261C</color>
+	<color name="ic_launcher_background">#14261C</color>
 </resources>
