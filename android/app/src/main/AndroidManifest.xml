@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="golden_grain_calculator"
+        android:label="Golden Grain"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

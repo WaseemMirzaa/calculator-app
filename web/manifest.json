@@ -1,6 +1,6 @@
 {
-    "name": "golden_grain_calculator",
-    "short_name": "golden_grain_calculator",
+    "name": "Golden Grain",
+    "short_name": "Golden Grain",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

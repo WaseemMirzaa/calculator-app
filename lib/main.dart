@@ -26,7 +26,7 @@ class GoldenGrainApp extends StatelessWidget {
     return AppScope(
       premium: premium,
       child: MaterialApp(
-        title: 'Golden Grain Calculator',
+        title: 'Golden Grain',
         debugShowCheckedModeBanner: false,
         theme: buildAppTheme(),
         home: const SplashScreen(),
