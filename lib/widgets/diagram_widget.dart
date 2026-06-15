@@ -63,41 +63,51 @@ class DiagramWidget extends StatelessWidget {
               // --- The two hatched blocks ---
               ClipRRect(
                 borderRadius: BorderRadius.circular(6),
-                child: const SizedBox(
+                child: SizedBox(
                   height: 38,
-                  child: Row(
+                  child: Stack(
                     children: [
-                      // Block A — 61.8%, gold 45° hatch.
-                      Expanded(
-                        flex: 618,
-                        child: _HatchBlock(
-                          base: AppColors.gold05,
-                          stripe: AppColors.gold15,
-                          positiveSlope: true,
-                          border: Border(
-                            top: BorderSide(color: AppColors.gold40),
-                            left: BorderSide(color: AppColors.gold40),
-                            bottom: BorderSide(color: AppColors.gold40),
-                            right: BorderSide(color: AppColors.gold60),
+                      const Row(
+                        children: [
+                          // Block A — 61.8%, gold 45° hatch.
+                          Expanded(
+                            flex: 618,
+                            child: _HatchBlock(
+                              base: AppColors.gold05,
+                              stripe: AppColors.gold15,
+                              positiveSlope: true,
+                              border: Border(
+                                top: BorderSide(color: AppColors.gold40),
+                                left: BorderSide(color: AppColors.gold40),
+                                bottom: BorderSide(color: AppColors.gold40),
+                                right: BorderSide(color: AppColors.gold60),
+                              ),
+                              label: 'A',
+                              labelColor: AppColors.textLight,
+                            ),
                           ),
-                          label: 'A',
-                          labelColor: AppColors.textLight,
-                        ),
+                          // Block B — 38.2%, muted -45° hatch (no left border).
+                          Expanded(
+                            flex: 382,
+                            child: _HatchBlock(
+                              base: AppColors.muted05,
+                              stripe: AppColors.muted15,
+                              positiveSlope: false,
+                              border: Border(
+                                top: BorderSide(color: AppColors.muted30),
+                                right: BorderSide(color: AppColors.muted30),
+                                bottom: BorderSide(color: AppColors.muted30),
+                              ),
+                              label: 'B',
+                              labelColor: AppColors.textMuted,
+                            ),
+                          ),
+                        ],
                       ),
-                      // Block B — 38.2%, muted -45° hatch (no left border).
-                      Expanded(
-                        flex: 382,
-                        child: _HatchBlock(
-                          base: AppColors.muted05,
-                          stripe: AppColors.muted15,
-                          positiveSlope: false,
-                          border: Border(
-                            top: BorderSide(color: AppColors.muted30),
-                            right: BorderSide(color: AppColors.muted30),
-                            bottom: BorderSide(color: AppColors.muted30),
-                          ),
-                          label: 'B',
-                          labelColor: AppColors.textMuted,
+                      // Graduation ticks across A+B that match the active tab.
+                      Positioned.fill(
+                        child: CustomPaint(
+                          painter: _BlockGraduationPainter(precision),
                         ),
                       ),
                     ],
@@ -268,6 +278,74 @@ class _RulerPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _RulerPainter oldDelegate) =>
+      oldDelegate.precision != precision;
+}
+
+/// Overlays the A/B blocks with measurement ticks whose density tracks the
+/// active [Precision] — so the blocks visibly change with the selected tab.
+/// Minor ticks hang from the top edge (one per subdivision); quarter-point
+/// ticks are taller and also mirrored on the bottom edge.
+class _BlockGraduationPainter extends CustomPainter {
+  _BlockGraduationPainter(this.precision);
+
+  final Precision precision;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double w = size.width;
+
+    final int divisions;
+    final int majorStep;
+    final int medStep;
+    if (precision.isMm) {
+      divisions = 20;
+      majorStep = 5;
+      medStep = 0;
+    } else {
+      final int d = precision.denominator!; // 16 / 32 / 64
+      divisions = d;
+      majorStep = d ~/ 4;
+      medStep = d ~/ 8;
+    }
+
+    final Paint major = Paint()
+      ..color = AppColors.goldBright
+      ..strokeWidth = 1;
+    final Paint minor = Paint()
+      ..color = AppColors.goldBright50
+      ..strokeWidth = 1;
+
+    for (int i = 1; i < divisions; i++) {
+      final double dx = ((i / divisions) * w).clamp(0.5, w - 0.5);
+
+      final double height;
+      final Paint paint;
+      if (i % majorStep == 0) {
+        height = 10;
+        paint = major;
+      } else if (medStep > 0 && i % medStep == 0) {
+        height = 7;
+        paint = minor;
+      } else {
+        height = 4;
+        paint = minor;
+      }
+
+      // Top edge tick.
+      canvas.drawLine(Offset(dx, 0), Offset(dx, height), paint);
+      // Mirror the quarter-point ticks on the bottom edge.
+      if (i % majorStep == 0) {
+        canvas.drawLine(
+          Offset(dx, size.height),
+          Offset(dx, size.height - height),
+          paint,
+        );
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _BlockGraduationPainter oldDelegate) =>
       oldDelegate.precision != precision;
 }
 

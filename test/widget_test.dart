@@ -57,6 +57,28 @@ void main() {
     expect(find.text('4.9443"'), findsOneWidget);
   });
 
+  testWidgets('the SPACE key is present and feeds the backend', (tester) async {
+    await _boot(tester);
+
+    // The SPACE bar exists on the keypad.
+    expect(find.text('SPACE'), findsOneWidget);
+
+    // Type "8" then SPACE — the space must reach the engine without breaking
+    // parsing ("8 " trims to 8").
+    await tester.ensureVisible(find.text('8'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('8'));
+    await tester.pump();
+
+    await tester.ensureVisible(find.text('SPACE'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('SPACE'));
+    await tester.pump();
+
+    expect(find.text('8.0000"'), findsOneWidget);
+    expect(find.text('4.9443"'), findsOneWidget);
+  });
+
   testWidgets('tapping a locked toggle opens the upsell modal', (tester) async {
     await _boot(tester);
 
