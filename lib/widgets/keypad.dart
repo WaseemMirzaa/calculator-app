@@ -50,6 +50,9 @@ class Keypad extends StatelessWidget {
       ],
     ];
 
+    // Full-width SPACE bar (lets you type e.g. "10 1/2"); inert in MM mode.
+    final spaceSpec = _KeySpec.space();
+
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -75,6 +78,17 @@ class Keypad extends StatelessWidget {
             ),
             if (r < rows.length - 1) const SizedBox(height: 8),
           ],
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: _KeyButton(
+                  spec: spaceSpec,
+                  onTap: () => _handle(spaceSpec),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -120,11 +134,20 @@ class _KeySpec {
         color: AppColors.lockedKeyText,
       );
 
+  factory _KeySpec.space() => const _KeySpec(
+        label: 'SPACE',
+        keyValue: ' ',
+        isAction: false,
+        isLocked: false,
+      );
+
   final String label;
   final String? keyValue;
   final bool isAction;
   final bool isLocked;
   final Color? color;
+
+  bool get isSpace => keyValue == ' ';
 }
 
 class _KeyButton extends StatefulWidget {
@@ -168,23 +191,27 @@ class _KeyButtonState extends State<_KeyButton> {
           padding: const EdgeInsets.symmetric(vertical: 14),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: _pressed ? AppColors.bgKeyActive : AppColors.bgKey,
+            gradient: _pressed ? AppGradients.keyPressed : AppGradients.key,
             borderRadius: BorderRadius.circular(8),
-            boxShadow: const [
-              BoxShadow(
-                color: AppColors.black20,
-                blurRadius: 4,
-                offset: Offset(0, 2),
-              ),
-            ],
+            // Faint top rim-light for a moulded, tactile key.
+            border: Border.all(color: AppColors.white05),
+            boxShadow: _pressed
+                ? null
+                : const [
+                    BoxShadow(
+                      color: AppColors.black30,
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
           ),
           child: Text(
             caption,
             style: TextStyle(
-              fontSize: spec.isAction ? 16 : 20,
+              fontSize: spec.isSpace ? 13 : (spec.isAction ? 16 : 20),
               fontWeight: FontWeight.w600,
-              color: textColor,
-              letterSpacing: spec.isAction ? 0.5 : 0,
+              color: spec.isSpace ? AppColors.textMuted : textColor,
+              letterSpacing: spec.isSpace ? 4 : (spec.isAction ? 0.5 : 0),
             ),
           ),
         ),

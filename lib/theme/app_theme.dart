@@ -55,6 +55,86 @@ class AppColors {
 
   // --- Overlay used by the free-version upsell modal: rgba(20,38,28,0.95) ---
   static const Color modalScrim = Color(0xF214261C);
+
+  // --- Premium finish tokens (subtle gradients + glow; not in the original
+  //     CSS, added to give the layout a richer, more luxurious feel) ---
+  static const Color goldDeep =
+      Color(0xFFB8902F); // darker end of the gold sheen
+  static const Color goldHighlight =
+      Color(0xFFFBF3CE); // brightest gold catch-light
+  static const Color panelLight = Color(0xFF21402F); // card gradient — top
+  static const Color panelDark = Color(0xFF152A1F); // card gradient — bottom
+  static const Color woodTop = Color(0xFF182D21); // scaffold gradient — top
+  static const Color woodDeep =
+      Color(0xFF0F1D15); // scaffold gradient — bottom/vignette
+  static const Color keyLight = Color(0xFF2B4E3A); // key gradient — top
+  static const Color keyDark = Color(0xFF20392B); // key gradient — bottom
+  static const Color keyActiveDark = Color(0xFF274A37); // pressed key — bottom
+  static const Color gold25 = Color(0x40D4AF37); // soft gold border
+  static const Color goldGlow = Color(0x4DD4AF37); // gold glow shadow (0.30)
+  static const Color goldGlowSoft =
+      Color(0x26D4AF37); // fainter gold glow (0.15)
+}
+
+/// Reusable gradients + shadow recipes for the premium finish.
+class AppGradients {
+  AppGradients._();
+
+  /// Metallic gold sheen for headings (used via [ShaderMask]).
+  static const LinearGradient goldMetallic = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      AppColors.goldHighlight,
+      AppColors.goldPrimary,
+      AppColors.goldDeep,
+      AppColors.goldPrimary,
+    ],
+    stops: [0.0, 0.45, 0.75, 1.0],
+  );
+
+  /// Vertical gold sheen for primary buttons / the active toggle.
+  static const LinearGradient goldButton = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      AppColors.goldHighlight,
+      AppColors.goldPrimary,
+      AppColors.goldDeep
+    ],
+    stops: [0.0, 0.5, 1.0],
+  );
+
+  /// Subtle top-lit gradient for the calculator panel.
+  static const LinearGradient panel = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [AppColors.panelLight, AppColors.bgPanel, AppColors.panelDark],
+    stops: [0.0, 0.5, 1.0],
+  );
+
+  /// Background vignette behind the card.
+  static const LinearGradient scaffold = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [AppColors.woodTop, AppColors.bgDarkWood, AppColors.woodDeep],
+    stops: [0.0, 0.45, 1.0],
+  );
+
+  /// Tactile, slightly domed gradient for keypad keys.
+  static const LinearGradient key = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [AppColors.keyLight, AppColors.bgKey, AppColors.keyDark],
+    stops: [0.0, 0.55, 1.0],
+  );
+
+  /// Pressed-key gradient.
+  static const LinearGradient keyPressed = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [AppColors.bgKeyActive, AppColors.keyActiveDark],
+  );
 }
 
 /// Builds the global [ThemeData]. The visual surfaces below are intentionally

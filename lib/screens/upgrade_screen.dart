@@ -50,155 +50,175 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     final premium = AppScope.of(context);
     final bool isPremium = premium.isPremium;
 
-    return Scaffold(
-      backgroundColor: AppColors.bgDarkWood,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: AppColors.goldPrimary,
-        title: const Text(
-          'Pro Precision',
-          style: TextStyle(
-            color: AppColors.goldPrimary,
-            fontWeight: FontWeight.w700,
-            fontSize: 18,
+    return DecoratedBox(
+        decoration: const BoxDecoration(gradient: AppGradients.scaffold),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            foregroundColor: AppColors.goldPrimary,
+            title: const Text(
+              'Pro Precision',
+              style: TextStyle(
+                color: AppColors.goldPrimary,
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+              ),
+            ),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 440),
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: AppColors.bgPanel,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: isPremium ? AppColors.gold40 : AppColors.goldPrimary,
-                    width: 2,
-                  ),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: AppColors.black50,
-                      blurRadius: 30,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Icon(
-                      isPremium ? Icons.workspace_premium : Icons.lock_open,
-                      color: AppColors.goldBright,
-                      size: 48,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      isPremium
-                          ? 'Pro Precision Active'
-                          : 'Unlock Pro Precision',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.goldBright,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 440),
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: AppColors.bgPanel,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isPremium
+                            ? AppColors.gold40
+                            : AppColors.goldPrimary,
+                        width: 2,
                       ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: AppColors.black50,
+                          blurRadius: 30,
+                          offset: Offset(0, 10),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                    Text(
-                      isPremium
-                          ? 'Thank you for your support. All precision modes and '
-                              'the millimeter engine are unlocked on this device.'
-                          : 'Upgrade for a one-time payment of '
-                              '${PremiumService.price} to access expert framing '
-                              '& millwork layouts:',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.textLight,
-                        fontSize: 14,
-                        height: 1.4,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const _FeatureRow('1/32" Tighter Precision Toggle'),
-                    const _FeatureRow('1/64" Extreme Precision Toggle'),
-                    const _FeatureRow('Full Millimeter (MM) Conversion Engine'),
-                    const _FeatureRow('One-time purchase — no subscription'),
-                    const SizedBox(height: 24),
-                    if (!isPremium) ...[
-                      SizedBox(
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: _busy ? null : () => _buy(premium),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.goldPrimary,
-                            foregroundColor: AppColors.actionTextOnGold,
-                            disabledBackgroundColor: AppColors.gold40,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Icon(
+                          isPremium ? Icons.workspace_premium : Icons.lock_open,
+                          color: AppColors.goldBright,
+                          size: 48,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          isPremium
+                              ? 'Pro Precision Active'
+                              : 'Unlock Pro Precision',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: AppColors.goldBright,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
                           ),
-                          child: _busy
-                              ? const SizedBox(
-                                  height: 22,
-                                  width: 22,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: AppColors.actionTextOnGold,
-                                  ),
-                                )
-                              : const Text(
-                                  'Upgrade Now - ${PremiumService.price}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          isPremium
+                              ? 'Thank you for your support. All precision modes and '
+                                  'the millimeter engine are unlocked on this device.'
+                              : 'Upgrade for a one-time payment of '
+                                  '${PremiumService.price} to access expert framing '
+                                  '& millwork layouts:',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: AppColors.textLight,
+                            fontSize: 14,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const _FeatureRow('1/32" Tighter Precision Toggle'),
+                        const _FeatureRow('1/64" Extreme Precision Toggle'),
+                        const _FeatureRow(
+                            'Full Millimeter (MM) Conversion Engine'),
+                        const _FeatureRow(
+                            'One-time purchase — no subscription'),
+                        const SizedBox(height: 24),
+                        if (!isPremium) ...[
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: AppGradients.goldButton,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: AppColors.goldGlow,
+                                  blurRadius: 18,
+                                  spreadRadius: -2,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: _busy ? null : () => _buy(premium),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                  shadowColor: Colors.transparent,
+                                  foregroundColor: AppColors.actionTextOnGold,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextButton(
-                        onPressed: _busy ? null : () => _restore(premium),
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.textMuted,
-                        ),
-                        child: const Text('Restore Purchase'),
-                      ),
-                    ] else
-                      SizedBox(
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.bgKey,
-                            foregroundColor: AppColors.goldBright,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                                child: _busy
+                                    ? const SizedBox(
+                                        height: 22,
+                                        width: 22,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: AppColors.actionTextOnGold,
+                                        ),
+                                      )
+                                    : const Text(
+                                        'Upgrade Now - ${PremiumService.price}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                              ),
                             ),
                           ),
-                          child: const Text(
-                            'Back to Calculator',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
+                          const SizedBox(height: 8),
+                          TextButton(
+                            onPressed: _busy ? null : () => _restore(premium),
+                            style: TextButton.styleFrom(
+                              foregroundColor: AppColors.textMuted,
+                            ),
+                            child: const Text('Restore Purchase'),
+                          ),
+                        ] else
+                          SizedBox(
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.bgKey,
+                                foregroundColor: AppColors.goldBright,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text(
+                                'Back to Calculator',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 

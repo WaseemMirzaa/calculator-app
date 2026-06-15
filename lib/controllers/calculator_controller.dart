@@ -82,8 +82,10 @@ class CalculatorController extends ChangeNotifier {
   // recompute, which yields the exact same visible result.
   // ---------------------------------------------------------------------------
   void pressKey(String key) {
-    // In MM mode the fraction/feet/inch keys are inert (as in the source).
-    if (_precision.isMm && (key == '/' || key == "'" || key == '"')) {
+    // In MM mode the fraction/feet/inch/space keys are inert (a raw mm number
+    // has no use for them) — consistent with the source's key gating.
+    if (_precision.isMm &&
+        (key == '/' || key == "'" || key == '"' || key == ' ')) {
       return;
     }
 
