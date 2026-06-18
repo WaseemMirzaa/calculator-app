@@ -1,0 +1,1 @@
+Golden ratio layout tool — split any length into perfect inch-fraction segments.

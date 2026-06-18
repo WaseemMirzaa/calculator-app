@@ -1,0 +1,5 @@
+# Path to the Google Play service-account JSON (a CI secret is written here).
+json_key_file(ENV["PLAY_SERVICE_ACCOUNT_JSON_PATH"] || "play-service-account.json")
+
+# The application id registered in the Google Play Console.
+package_name("com.goldengrain.golden_grain_calculator")

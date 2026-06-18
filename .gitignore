@@ -44,6 +44,12 @@ unlinked_spec.ds
 **/android/key.properties
 *.jks
 
+# Play Store / Fastlane secrets & artifacts
+**/play-service-account.json
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/.bundle/
+
 # iOS/macOS related
 **/ios/**/*.mode1v3
 **/ios/**/*.mode2v3

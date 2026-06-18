@@ -1,0 +1,6 @@
+# Screenshot/asset generation is skipped by default (it writes golden files and
+# needs SDK fonts). Generate Play Store assets with:
+#   flutter test --run-skipped --tags screenshots --update-goldens
+tags:
+  screenshots:
+    skip: "asset generation — run with --run-skipped --tags screenshots --update-goldens"

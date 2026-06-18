@@ -1,0 +1,25 @@
+Golden Grain is a precision layout tool for woodworkers, framers, finish carpenters and designers who build to the golden ratio (φ ≈ 1.618).
+
+Enter any dimension and instantly see it divided into two golden segments — the large segment A and the small segment B — in clean imperial inch fractions. Drive the calculation from whichever value you know: the combined length, the large segment, or the small segment, and the other two update live.
+
+FEATURES
+
+• Golden ratio engine — A = AB ÷ φ and B = AB − A, computed instantly.
+• Inch-fraction output with feet roll-up, automatically reduced (e.g. 6 1/2").
+• Type mixed measurements with a real keypad: whole numbers, fractions, feet and inches, and a SPACE key for values like 10 1/2.
+• A live golden-ratio diagram with measurement graduations that match your selected precision.
+• Decimal readout alongside every fraction.
+
+FREE
+
+• 1/16" precision.
+
+PRO PRECISION (one-time upgrade)
+
+• 1/32" tighter precision.
+• 1/64" extreme precision.
+• Full millimeter (MM) conversion engine.
+
+No ads. No tracking. No account. Everything runs on your device.
+
+Measure twice, cut once — to the golden ratio.

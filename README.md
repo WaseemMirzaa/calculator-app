@@ -63,6 +63,14 @@ GitHub Actions handles verification and packaging — see [`.github/workflows`](
   `build/app/outputs/flutter-apk/app-release.apk`
   (needs the Android SDK and access to Google's Maven repository).
 
+### Play Store (beta)
+
+`playstore-beta.yml` builds a **signed AAB** and uploads it — with the store
+listing, changelog and screenshots — to a Google Play track via Fastlane.
+Release signing reads `android/key.properties` (created in CI from secrets;
+absent locally → debug signing). Full setup, required secrets and asset
+regeneration are documented in **[PLAYSTORE.md](PLAYSTORE.md)**.
+
 > The release build is signed with the debug key so it installs for testing.
 > Before publishing to the Play Store, add a real keystore + `signingConfig`
 > in `android/app/build.gradle.kts`.

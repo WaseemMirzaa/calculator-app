@@ -1,0 +1,7 @@
+First beta of Golden Grain.
+
+• Golden-ratio inch-fraction calculator (drive from AB, A or B).
+• Free 1/16" precision; Pro unlocks 1/32", 1/64" and millimeters.
+• Real keypad with feet/inch/fraction entry and a SPACE key.
+• Live golden-ratio diagram with precision-aware graduations.
+• Premium dark-wood + gold theme.

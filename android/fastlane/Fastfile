@@ -1,0 +1,54 @@
+default_platform(:android)
+
+# Path to the built App Bundle (relative to the android/ directory).
+AAB_PATH = "../build/app/outputs/bundle/release/app-release.aab"
+JSON_KEY = ENV["PLAY_SERVICE_ACCOUNT_JSON_PATH"] || "play-service-account.json"
+
+platform :android do
+  desc "Upload the release AAB + store listing to a Play track (default: beta)"
+  desc "Options: track:internal|alpha|beta|production  status:draft|completed  validate:true"
+  lane :beta do |options|
+    track  = options[:track]  || "beta"
+    status = options[:status] || "completed"
+    upload_to_play_store(
+      track: track,
+      release_status: status,
+      aab: AAB_PATH,
+      json_key: JSON_KEY,
+      skip_upload_apk: true,
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      skip_upload_changelogs: false,
+      validate_only: options[:validate] == true || options[:validate] == "true",
+      metadata_path: "./fastlane/metadata/android"
+    )
+  end
+
+  desc "Upload only the store listing (text, icon, feature graphic, screenshots)"
+  lane :metadata do |options|
+    upload_to_play_store(
+      track: options[:track] || "beta",
+      json_key: JSON_KEY,
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      skip_upload_changelogs: false,
+      metadata_path: "./fastlane/metadata/android"
+    )
+  end
+
+  desc "Dry-run validation of the upload without committing anything"
+  lane :validate do |options|
+    upload_to_play_store(
+      track: options[:track] || "beta",
+      aab: AAB_PATH,
+      json_key: JSON_KEY,
+      skip_upload_apk: true,
+      validate_only: true,
+      metadata_path: "./fastlane/metadata/android"
+    )
+  end
+end
