@@ -20,6 +20,8 @@ migrate_working_dir/
 .vscode/
 
 # Flutter/Dart/Pub related
+.fvm/flutter_sdk
+.fvm/versions
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -42,6 +44,7 @@ unlinked_spec.ds
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
+**/android/SIGNING_CREDENTIALS.local.txt
 *.jks
 
 # Play Store / Fastlane secrets & artifacts

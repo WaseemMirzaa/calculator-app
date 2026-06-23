@@ -1,4 +1,4 @@
-package com.goldengrain.golden_grain_calculator
+package com.app.goldengraincalculator
 
 import io.flutter.embedding.android.FlutterActivity
 

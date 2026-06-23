@@ -3,6 +3,7 @@ import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -18,9 +19,9 @@ if (hasKeystore) {
 }
 
 android {
-    namespace = "com.goldengrain.golden_grain_calculator"
+    namespace = "com.app.goldengraincalculator"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -28,7 +29,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.goldengrain.golden_grain_calculator"
+        applicationId = "com.app.goldengraincalculator"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
