@@ -124,6 +124,7 @@ class CalculatorController extends ChangeNotifier {
     _userInputs['ab'] = '';
     _userInputs['a'] = '';
     _userInputs['b'] = '';
+    _isPurePlaceholder = false;
     _recompute();
     notifyListeners();
   }
@@ -175,8 +176,9 @@ class CalculatorController extends ChangeNotifier {
       }
     } else {
       if (activeString.isEmpty) {
-        decimalInches =
-            GrainCalculator.parseToDecimal(_placeholders[_activeDriver]!);
+        decimalInches = _isPurePlaceholder
+            ? GrainCalculator.parseToDecimal(_placeholders[_activeDriver]!)
+            : 0;
       } else {
         decimalInches = GrainCalculator.parseToDecimal(activeString);
       }
@@ -203,7 +205,7 @@ class CalculatorController extends ChangeNotifier {
         if (_userInputs[id]!.isNotEmpty) {
           _displayText[id] = _userInputs[id]! + (_precision.isMm ? ' mm' : '');
         } else {
-          _displayText[id] = _precision.isMm ? '0 mm' : _placeholders[id]!;
+          _displayText[id] = _precision.isMm ? '0 mm' : '0"';
         }
       } else {
         _displayText[id] = formattedFraction.isNotEmpty
