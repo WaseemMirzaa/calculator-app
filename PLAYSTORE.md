@@ -16,8 +16,16 @@ to a Google Play track using [Fastlane](https://docs.fastlane.tools/).
 
 ### 1. Create the app + first manual upload
 Google Play's API **cannot create** an app or accept the very first binary.
-In the Play Console, create the app `com.goldengrain.golden_grain_calculator`
+In the Play Console, create the app `com.app.goldengraincalculator`
 and upload one AAB manually (any track). After that, CI can take over.
+
+### 1b. Create the Pro Precision subscription
+1. Play Console → **Monetize → Products → Subscriptions**.
+2. Create subscription product **`goldengrain_premium`** (must match
+   `lib/services/billing_config.dart`).
+3. Add base plans **`monthly`** (auto-renewing) and **`yearly`** (prepaid),
+   set prices, and activate both.
+4. License-test the app with a tester account before going live.
 
 ### 2. Create an upload keystore
 ```bash

@@ -117,5 +117,11 @@ void main() {
       expect(GrainCalculator.decimalLabel(10.5), '10.5000"');
       expect(GrainCalculator.decimalLabel(6.489338), '6.4893"');
     });
+
+    test('formats to four decimals with mm in MM mode', () {
+      expect(GrainCalculator.mmDecimalLabel(1.0), '25.4000 mm');
+      expect(GrainCalculator.mmDecimalLabel(100 / GrainCalculator.mmPerInch),
+          '100.0000 mm');
+    });
   });
 }

@@ -9,7 +9,7 @@ import '../widgets/calculator_card.dart';
 import '../widgets/upsell_modal.dart';
 import 'privacy_screen.dart';
 import 'terms_screen.dart';
-import 'upgrade_screen.dart';
+import 'subscription_screen.dart';
 
 /// The home screen. A single adaptive layout serves both tiers — the only
 /// difference is whether the premium controls are locked — so upgrading
@@ -21,13 +21,12 @@ class CalculatorScreen extends StatefulWidget {
   State<CalculatorScreen> createState() => _CalculatorScreenState();
 }
 
-enum _MenuAction { upgrade, restore, privacy, terms, resetFree }
+enum _MenuAction { subscription, restore, privacy, terms, resetFree }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
   final CalculatorController _controller = CalculatorController();
 
   bool _showUpsell = false;
-  bool _purchasing = false;
 
   @override
   void dispose() {
@@ -38,16 +37,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   void _openUpsell() => setState(() => _showUpsell = true);
   void _closeUpsell() => setState(() => _showUpsell = false);
 
-  Future<void> _purchaseFromModal() async {
-    final premium = AppScope.of(context);
-    setState(() => _purchasing = true);
-    await premium.purchase();
-    if (!mounted) return;
-    setState(() {
-      _purchasing = false;
-      _showUpsell = false;
-    });
-    _toast('Premium unlocked — enjoy Pro Precision!');
+  void _openPaywall() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const SubscriptionScreen()),
+    );
+  }
+
+  void _openPaywallFromUpsell() {
+    _closeUpsell();
+    _openPaywall();
   }
 
   void _toast(String message) {
@@ -61,9 +59,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Future<void> _onMenu(_MenuAction action) async {
     final premium = AppScope.of(context);
     switch (action) {
-      case _MenuAction.upgrade:
+      case _MenuAction.subscription:
         Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => const UpgradeScreen()),
+          MaterialPageRoute<void>(builder: (_) => const SubscriptionScreen()),
         );
         break;
       case _MenuAction.restore:
@@ -110,7 +108,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           ),
           drawer: AppDrawer(
             isPremium: isPremium,
-            onUpgrade: () => _onMenu(_MenuAction.upgrade),
+            price: premium.price,
+            onSubscription: () => _onMenu(_MenuAction.subscription),
             onRestore: () => _onMenu(_MenuAction.restore),
             onPrivacy: () => _onMenu(_MenuAction.privacy),
             onTerms: () => _onMenu(_MenuAction.terms),
@@ -138,8 +137,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               // Cover the whole screen so the upsell reads like the HTML overlay.
               if (_showUpsell)
                 UpsellModal(
-                  busy: _purchasing,
-                  onUpgrade: _purchaseFromModal,
+                  price: premium.price,
+                  onUpgrade: _openPaywallFromUpsell,
                   onClose: _closeUpsell,
                 ),
             ],

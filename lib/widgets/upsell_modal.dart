@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../services/premium_service.dart';
 import '../theme/app_theme.dart';
 
 /// Full-card overlay shown when a free-tier user taps a locked control.
@@ -9,10 +8,14 @@ import '../theme/app_theme.dart';
 class UpsellModal extends StatelessWidget {
   const UpsellModal({
     super.key,
+    required this.price,
     required this.onUpgrade,
     required this.onClose,
     this.busy = false,
   });
+
+  /// Localized subscription price from the store.
+  final String price;
 
   /// Called when "Upgrade Now" is tapped (runs the purchase flow).
   final VoidCallback onUpgrade;
@@ -60,23 +63,22 @@ class UpsellModal extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text.rich(
+                Text.rich(
                   TextSpan(
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       height: 1.4,
                       color: AppColors.textLight,
                     ),
                     children: [
-                      TextSpan(
-                        text: 'Upgrade to the premium package for a one-time '
-                            'payment of ',
+                      const TextSpan(
+                        text: 'Subscribe to Pro Precision for ',
                       ),
                       TextSpan(
-                        text: PremiumService.price,
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        text: price,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
-                      TextSpan(
+                      const TextSpan(
                         text: ' to access expert framing & millwork layouts:',
                       ),
                     ],
@@ -134,7 +136,7 @@ class UpsellModal extends StatelessWidget {
                               ),
                             )
                           : const Text(
-                              'Upgrade Now - ${PremiumService.price}',
+                              'View subscription plans',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,

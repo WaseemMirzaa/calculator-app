@@ -38,8 +38,11 @@ void main() {
     }
 
     expect(c.rowView('ab').text, '100 mm');
+    expect(c.rowView('ab').decimal, '100.0000 mm');
     expect(c.rowView('a').text, endsWith('mm'));
+    expect(c.rowView('a').decimal, endsWith(' mm'));
     expect(c.rowView('b').text, endsWith('mm'));
+    expect(c.rowView('b').decimal, endsWith(' mm'));
   });
 
   test('changing precision keeps the driver value, reformatted', () {

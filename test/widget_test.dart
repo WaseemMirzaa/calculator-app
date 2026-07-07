@@ -91,7 +91,7 @@ void main() {
 
     // The free-tier upsell overlay appears with its exact heading + CTA.
     expect(find.text('Unlock Pro Precision'), findsOneWidget);
-    expect(find.text('Upgrade Now - \$3.99'), findsOneWidget);
+    expect(find.text('View subscription plans'), findsOneWidget);
   });
 
   testWidgets('premium tier shows the PRO badge', (tester) async {

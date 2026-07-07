@@ -121,14 +121,26 @@ testable. It mirrors the original script:
 "pure placeholder" flag and the precision mode, reproducing `pressKey`,
 `setActiveRow`, `setPrecision` and the MM conversions exactly.
 
-## Premium / In-App Purchase
+## Premium / Google Play Subscriptions (Android)
 
-`PremiumService` persists a single unlock flag via `shared_preferences`. The
-`purchase()` and `restore()` methods are **mocked** (they simulate a successful
-store round-trip). To ship for real, replace their bodies with a billing
-integration (e.g. the [`in_app_purchase`](https://pub.dev/packages/in_app_purchase)
-package) and only flip the flag on a verified purchase — every screen already
-reacts to `isPremium`.
+Pro Precision uses **real Google Play Billing** — there is no mocked purchase path.
+
+| Layer | File | Role |
+|---|---|---|
+| Play API | `lib/services/play_subscription_billing.dart` | Queries `goldengrain_premium` (`monthly` / `yearly` base plans), launches native purchase sheet with offer tokens, syncs entitlement via `queryPastPurchases` |
+| App state | `lib/services/premium_service.dart` | Listens to purchase stream, grants/revokes premium from Play only |
+| Catalog | `lib/services/subscription_catalog.dart` | Parses Play prices, billing period (P1M/P1Y), intro offers |
+| UI | `lib/screens/subscription_screen.dart` | Plan picker, subscribe, restore, manage/cancel in Play |
+
+On Android startup the app:
+
+1. Connects to Google Play Billing Library 7 (`billing-ktx` in `android/app/build.gradle.kts`)
+2. Loads live product details from Play Console
+3. Calls `queryPastPurchases` — **only grants premium if Play reports an active subscription**
+
+Purchases use `GooglePlayPurchaseParam` with the subscription **offer token** (required by Play Billing 5+). Upgrading monthly → yearly uses `ChangeSubscriptionParam` with proration.
+
+Create subscription **`goldengrain_premium`** in Play Console with base plans **`monthly`** and **`yearly`**, then test with a license tester on a closed/internal track.
 
 For convenience while testing, debug builds expose a "Switch to Free (debug)"
 menu item so both layouts can be exercised on one install.

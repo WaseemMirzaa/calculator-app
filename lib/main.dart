@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'app_scope.dart';
 import 'screens/splash_screen.dart';
+import 'services/play_billing_setup.dart';
 import 'services/premium_service.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await configurePlayBilling();
 
   // Load the persisted premium entitlement before the first frame so the
   // calculator opens directly in the correct (free/premium) state.

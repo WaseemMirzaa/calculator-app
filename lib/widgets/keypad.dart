@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../models/app_feature.dart';
 import '../controllers/calculator_controller.dart';
 import '../theme/app_theme.dart';
 
@@ -44,7 +45,10 @@ class Keypad extends StatelessWidget {
         _KeySpec.digit("'"),
         _KeySpec.digit('0'),
         _KeySpec.digit('"'),
-        isPremium
+        FeatureAccess.isUnlocked(
+          AppFeature.millimeterConversion,
+          isPremium: isPremium,
+        )
             ? _KeySpec.action('mm', 'mm', color: AppColors.goldBright)
             : _KeySpec.locked('mm'),
       ],

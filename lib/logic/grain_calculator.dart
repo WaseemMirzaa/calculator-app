@@ -152,6 +152,10 @@ class GrainCalculator {
   /// Decimal-inch subtext exactly as the HTML renders it: `value.toFixed(4)"`.
   static String decimalLabel(double value) => '${value.toStringAsFixed(4)}"';
 
+  /// Decimal-millimetre subtext for MM precision mode.
+  static String mmDecimalLabel(double decimalInches) =>
+      '${(decimalInches * mmPerInch).toStringAsFixed(4)} mm';
+
   // ---------------------------------------------------------------------------
   // Internal helpers
   // ---------------------------------------------------------------------------

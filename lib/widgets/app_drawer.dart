@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../services/premium_service.dart';
 import '../theme/app_theme.dart';
 
 /// Premium-themed side navigation drawer. Shows the current plan at the top and
@@ -9,7 +8,8 @@ class AppDrawer extends StatelessWidget {
   const AppDrawer({
     super.key,
     required this.isPremium,
-    required this.onUpgrade,
+    required this.price,
+    required this.onSubscription,
     required this.onRestore,
     required this.onPrivacy,
     required this.onTerms,
@@ -17,7 +17,8 @@ class AppDrawer extends StatelessWidget {
   });
 
   final bool isPremium;
-  final VoidCallback onUpgrade;
+  final String price;
+  final VoidCallback onSubscription;
   final VoidCallback onRestore;
   final VoidCallback onPrivacy;
   final VoidCallback onTerms;
@@ -36,7 +37,6 @@ class AppDrawer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Brand line.
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 4),
                 child: ShaderMask(
@@ -66,29 +66,25 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // --- Current plan card ---
               _PlanCard(
-                  isPremium: isPremium,
-                  onUpgrade: () {
-                    Navigator.of(context).pop();
-                    onUpgrade();
-                  }),
-
+                isPremium: isPremium,
+                price: price,
+                onSubscription: () {
+                  Navigator.of(context).pop();
+                  onSubscription();
+                },
+              ),
               const SizedBox(height: 8),
               const _DrawerDivider(),
-
-              // --- Menu items ---
-              if (!isPremium)
-                _DrawerItem(
-                  icon: Icons.workspace_premium,
-                  label: 'Upgrade to Premium',
-                  highlighted: true,
-                  onTap: () => _run(context, onUpgrade),
-                ),
+              _DrawerItem(
+                icon: Icons.workspace_premium,
+                label: isPremium ? 'Manage subscription' : 'Pro Precision plans',
+                highlighted: !isPremium,
+                onTap: () => _run(context, onSubscription),
+              ),
               _DrawerItem(
                 icon: Icons.restore,
-                label: 'Restore Purchase',
+                label: 'Restore purchases',
                 onTap: () => _run(context, onRestore),
               ),
               _DrawerItem(
@@ -109,12 +105,11 @@ class AppDrawer extends StatelessWidget {
                   onTap: () => _run(context, onResetFree!),
                 ),
               ],
-
               const Spacer(),
               const Padding(
                 padding: EdgeInsets.all(20),
                 child: Text(
-                  'Version 1.0.0',
+                  'Version 1.0.3',
                   style: TextStyle(color: AppColors.textMuted, fontSize: 11),
                 ),
               ),
@@ -126,72 +121,79 @@ class AppDrawer extends StatelessWidget {
   }
 
   void _run(BuildContext context, VoidCallback action) {
-    Navigator.of(context).pop(); // close the drawer first
+    Navigator.of(context).pop();
     action();
   }
 }
 
 class _PlanCard extends StatelessWidget {
-  const _PlanCard({required this.isPremium, required this.onUpgrade});
+  const _PlanCard({
+    required this.isPremium,
+    required this.price,
+    required this.onSubscription,
+  });
 
   final bool isPremium;
-  final VoidCallback onUpgrade;
+  final String price;
+  final VoidCallback onSubscription;
 
   @override
   Widget build(BuildContext context) {
     if (isPremium) {
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          gradient: AppGradients.goldButton,
-          borderRadius: BorderRadius.circular(14),
-          boxShadow: const [
-            BoxShadow(
-              color: AppColors.goldGlow,
-              blurRadius: 20,
-              spreadRadius: -2,
-              offset: Offset(0, 6),
-            ),
-          ],
-        ),
-        child: const Row(
-          children: [
-            Icon(Icons.workspace_premium,
-                color: AppColors.actionTextOnGold, size: 30),
-            SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'PRO PRECISION',
-                    style: TextStyle(
-                      color: AppColors.actionTextOnGold,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'All features unlocked',
-                    style: TextStyle(
-                      color: Color(0xCC111111),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+      return GestureDetector(
+        onTap: onSubscription,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: AppGradients.goldButton,
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.goldGlow,
+                blurRadius: 20,
+                spreadRadius: -2,
+                offset: Offset(0, 6),
               ),
-            ),
-          ],
+            ],
+          ),
+          child: const Row(
+            children: [
+              Icon(Icons.workspace_premium,
+                  color: AppColors.actionTextOnGold, size: 30),
+              SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'PRO PRECISION',
+                      style: TextStyle(
+                        color: AppColors.actionTextOnGold,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Tap to manage subscription',
+                      style: TextStyle(
+                        color: Color(0xCC111111),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    // Free plan card.
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
@@ -225,7 +227,7 @@ class _PlanCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           GestureDetector(
-            onTap: onUpgrade,
+            onTap: onSubscription,
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -242,9 +244,9 @@ class _PlanCard extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Text(
-                'Unlock Pro — ${PremiumService.price}',
-                style: TextStyle(
+              child: Text(
+                'View plans from $price',
+                style: const TextStyle(
                   color: AppColors.actionTextOnGold,
                   fontSize: 14,
                   fontWeight: FontWeight.w700,

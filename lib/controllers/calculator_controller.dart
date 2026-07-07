@@ -213,6 +213,8 @@ class CalculatorController extends ChangeNotifier {
             : (_precision.isMm ? '0 mm' : '0"');
       }
     }
-    _decimal[id] = GrainCalculator.decimalLabel(value);
+    _decimal[id] = _precision.isMm
+        ? GrainCalculator.mmDecimalLabel(value)
+        : GrainCalculator.decimalLabel(value);
   }
 }

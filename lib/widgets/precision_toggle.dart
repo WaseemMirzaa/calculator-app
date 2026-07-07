@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../controllers/calculator_controller.dart';
+import '../models/app_feature.dart';
 import '../models/precision.dart';
 import '../theme/app_theme.dart';
 
@@ -36,9 +37,15 @@ class PrecisionToggle extends StatelessWidget {
               child: _ToggleButton(
                 label: p.label,
                 isActive: controller.precision == p,
-                isLocked: !isPremium && !p.isFreeTier,
+                isLocked: !FeatureAccess.isPrecisionUnlocked(
+                  p,
+                  isPremium: isPremium,
+                ),
                 onTap: () {
-                  if (!isPremium && !p.isFreeTier) {
+                  if (!FeatureAccess.isPrecisionUnlocked(
+                    p,
+                    isPremium: isPremium,
+                  )) {
                     onLocked();
                   } else {
                     controller.setPrecision(p);

@@ -67,3 +67,8 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // Google Play Billing Library (subscriptions). Also pulled by in_app_purchase.
+    implementation("com.android.billingclient:billing-ktx:7.1.1")
+}

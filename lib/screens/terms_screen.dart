@@ -22,12 +22,13 @@ class TermsScreen extends StatelessWidget {
               'these terms and the rules of the platform app store.',
         ),
         LegalSection(
-          'Premium Purchase',
-          'The "Pro Precision" package is a one-time, non-recurring in-app '
-              'purchase that unlocks 1/32" and 1/64" precision toggles and the '
-              'full millimeter conversion engine. Purchases are final except '
-              'where a refund is required by the app store\'s policies or '
-              'applicable law.',
+          'Premium Subscription',
+          'The "Pro Precision" package is a recurring monthly subscription that '
+              'unlocks 1/32" and 1/64" precision toggles and the full millimeter '
+              'conversion engine. Manage or cancel your subscription in Google '
+              'Play. Charges are handled by the app store and are final except '
+              'where a refund is required by the store\'s policies or applicable '
+              'law.',
         ),
         LegalSection(
           'Accuracy & Intended Use',
